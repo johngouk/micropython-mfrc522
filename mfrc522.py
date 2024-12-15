@@ -1,3 +1,4 @@
+# Now uses ESP32 hardware SPI
 from machine import Pin, SPI
 from os import uname
 
@@ -31,6 +32,9 @@ class MFRC522:
 			self.spi.init(SPI.MASTER, baudrate=1000000, pins=(self.sck, self.mosi, self.miso))
 		elif board == 'esp8266':
 			self.spi = SPI(baudrate=100000, polarity=0, phase=0, sck=self.sck, mosi=self.mosi, miso=self.miso)
+			self.spi.init()
+		elif board == 'esp32': # Hardware SPI
+			self.spi = SPI(1, baudrate=100000, polarity=0, phase=0, sck=self.sck, mosi=self.mosi, miso=self.miso)
 			self.spi.init()
 		else:
 			raise RuntimeError("Unsupported platform")
